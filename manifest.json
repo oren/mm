@@ -1,0 +1,31 @@
+{
+  "name": "Media Markt",
+  "version": "1.0",
+  "description": "Media Markt. yo no soy tonto",
+  "background": {
+    "scripts": ["background.js"],
+    "persistent": false
+  },
+  "page_action" :
+  {
+    "default_icon" : "icon-19.png",
+    "default_title" : "Media Markt"
+  },
+  "permissions" : [
+    "declarativeContent"
+  ],
+  "content_scripts": [
+    {
+      "matches": ["https://www.google.es/*"],
+      "js": ["myscript.js"]
+    }
+  ],
+  "icons" : {
+    "48" : "icon-48.png",
+    "128" : "icon-128.png"
+  },
+   "web_accessible_resources": [
+    "templates/*"
+  ],
+  "manifest_version": 2
+}
