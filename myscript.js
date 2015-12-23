@@ -67,10 +67,8 @@ function generateDOM() {
     items += tmpItem;
   });
 
-  var style = 'margin-left: 120px;';
-  // var listStyle = 'list-style-type: none;';
-  // var html = '<div id="products" style="' + style + '"><ul style="' + listStyle + '">' + items + '</ul></div>';
-  var html = '<div id="products" style="' + style + '">' + items + '</div>';
+  var style = 'margin-left: 120px; margin-top: 10px;';
+  var html = '<div id="products" style="' + style + '">' + items + '</div><div style="clear: both;"></div>';
 
   topNav = $('#cnt > .mw');
   if (topNav) {
