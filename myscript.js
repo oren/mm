@@ -53,6 +53,12 @@ function generateDOM() {
       link: 'http://tiendas.mediamarkt.es/p/pendrive-de-8gb-sandisk-cruzer-blade-usb-2.0-ultracompacto-color-negro-y-rojo-1117066',
       imageLink: 'http://d243u7pon29hni.cloudfront.net/images/products/002_1117066_m.jpg',
       price: '5.99'
+    },
+    {
+      title: 'Pendrive de 16gb',
+      link: 'http://tiendas.mediamarkt.es/p/pendrive-de-16gb-sandisk-cruzer-blade-usb-2.0-ultracompacto-en-color-negro-y-rojo-1117065',
+      imageLink: 'http://d243u7pon29hni.cloudfront.net/images/products/1117065_m.png',
+      price: '8.99'
     }
   ];
 
