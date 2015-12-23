@@ -90,7 +90,6 @@ function waitForElement(attempt, html) {
       return;
     }
 
-    console.log('attempt', attempt);
     attempt -= 1;
     if (attempt === 0) {
       return;
