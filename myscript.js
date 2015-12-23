@@ -67,20 +67,37 @@ function generateDOM() {
     items += tmpItem;
   });
 
+  // var style = 'margin-left: 120px; margin-top: 70px; margin-bottom: -50px;';
   var style = 'margin-left: 120px; margin-top: 10px;';
-  var html = '<div id="products" style="' + style + '">' + items + '</div><div style="clear: both;"></div>';
+  var html = '<div id="products" style="' + style + '">' + items + '</div>';
 
-  topNav = $('#cnt > .mw');
+  topNav = $('#top_nav');
   if (topNav) {
-    topNav.insertAdjacentHTML('afterend', html);
+    topNav.insertAdjacentHTML('beforebegin', html);
     return;
   }
 
-  // if we are here the topNav is still not visible
+  waitForElement(100, html);
+}
+
+// wait 30 ms until DOM is available before adding to DOM
+// try 100 times
+function waitForElement(attempt, html) {
   setTimeout(function() {
-    console.log('topNav', topNav);
-    topNav.insertAdjacentHTML('afterend', html);
-  },0);
+    topNav = $('#top_nav');
+    if (topNav) {
+      topNav.insertAdjacentHTML('beforebegin', html);
+      return;
+    }
+
+    console.log('attempt', attempt);
+    attempt -= 1;
+    if (attempt === 0) {
+      return;
+    }
+
+    waitForElement(attempt, html);
+  },30);
 }
 
 function getItem(cb) {
