@@ -67,9 +67,8 @@ function generateDOM() {
     items += tmpItem;
   });
 
-  // var style = 'margin-left: 120px; margin-top: 70px; margin-bottom: -50px;';
   var style = 'margin-left: 120px; margin-top: 10px;';
-  var html = '<div id="products" style="' + style + '">' + items + '</div>';
+  var html = '<div id="products" style="' + style + '"><p>Productos de Media Markt</p>' + items + '</div>';
 
   topNav = $('#top_nav');
   if (topNav) {
