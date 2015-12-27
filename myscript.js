@@ -26,7 +26,7 @@ function initContentScript() {
 
     if (e.keyCode === ENTER || e.keyCode === LEFT_CLICK) {
       clear();
-      generateDOM();
+      getHttp('https://gamelanguage.com/search?q=' + searchBox.value, generateDOM);
     }
   }
 }
@@ -39,34 +39,26 @@ function clear() {
   }
 }
 
-function generateDOM() {
-  // TODO: get from DB
-  var products = [
-    {
-      title: 'Micro sd de 4gb',
-      link: 'http://tiendas.mediamarkt.es/p/micro-sd-de-4gb-sandisk-hc-y-clase-4-1085193',
-      imageLink: 'http://d243u7pon29hni.cloudfront.net/images/products/001_Tarjeta_MeM_4GB_Sandisk_m.jpg',
-      price: '4.99'
-    },
-    {
-      title: 'Pendrive de 8gb',
-      link: 'http://tiendas.mediamarkt.es/p/pendrive-de-8gb-sandisk-cruzer-blade-usb-2.0-ultracompacto-color-negro-y-rojo-1117066',
-      imageLink: 'http://d243u7pon29hni.cloudfront.net/images/products/002_1117066_m.jpg',
-      price: '5.99'
-    },
-    {
-      title: 'Pendrive de 16gb',
-      link: 'http://tiendas.mediamarkt.es/p/pendrive-de-16gb-sandisk-cruzer-blade-usb-2.0-ultracompacto-en-color-negro-y-rojo-1117065',
-      imageLink: 'http://d243u7pon29hni.cloudfront.net/images/products/1117065_m.png',
-      price: '8.99'
-    }
-  ];
+function generateDOM(err, data) {
+  if (err) {
+    console.log(err);
+    return;
+  }
+
+  var products = [];
+  try {
+    products = JSON.parse(data);
+  } catch (e) {
+    console.error('error parsing json. data:', data);
+    return;
+  }
 
   var items = '';
   var tmpItem;
 
   products.forEach(function(item) {
     tmpItem = itemHtml.replace(new RegExp('{TITLE}', 'g'), item.title);
+    // tmpItem = tmpItem.replace(new RegExp('{SHORT_TITLE}', 'g'), item.title.substring(0,15) + '...');
     tmpItem = tmpItem.replace('{LINK}', item.link);
     tmpItem = tmpItem.replace('{IMAGE_LINK}', item.imageLink);
     tmpItem = tmpItem.replace('{PRICE}', item.price);
@@ -116,6 +108,29 @@ function getItem(cb) {
   };
   req.send(null);
   return req;
+}
+
+function getHttp(url, cb) {
+  var request = new XMLHttpRequest();
+  request.open('GET', url, true);
+
+  request.onload = function() {
+    if (request.status >= 200 && request.status < 400) {
+      // Success!
+      var resp = request.responseText;
+      return cb(null, resp);
+    } else {
+      // We reached our target server, but it returned an error
+      return cb('error. status:' + request.status + ' text:' + request.responseText, null);
+    }
+  };
+
+  request.onerror = function() {
+    // There was a connection error of some sort
+    return cb('connection error', null);
+  };
+
+  request.send();
 }
 
 initContentScript();

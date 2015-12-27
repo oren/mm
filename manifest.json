@@ -12,7 +12,8 @@
     "default_title" : "Media Markt"
   },
   "permissions" : [
-    "declarativeContent"
+    "declarativeContent",
+    "*://*.gamelanguage.com/*"
   ],
   "content_scripts": [
     {
