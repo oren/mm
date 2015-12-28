@@ -1,7 +1,8 @@
-// When the extension is installed or upgraded ...
+// when the extension is updated to a new version, and when Chrome is updated to a new version.
 chrome.runtime.onInstalled.addListener(function(details) {
+  console.log('installed. details:', details);
   // TODO: generate id
-  // TODO: make POST request
+  // TODO: make POST request and send the id and details
   var id = 1;
   getHttp('https://gamelanguage.com/install', installed);
 

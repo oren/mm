@@ -18,7 +18,7 @@
   "content_scripts": [
     {
       "matches": ["https://www.google.es/*"],
-      "js": ["myscript.js"]
+      "js": ["content-script.js"]
     }
   ],
   "icons" : {
