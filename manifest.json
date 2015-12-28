@@ -3,7 +3,7 @@
   "version": "1.0",
   "description": "Media Markt. yo no soy tonto",
   "background": {
-    "scripts": ["background.js"],
+    "scripts": ["event-page.js"],
     "persistent": false
   },
   "page_action" :
