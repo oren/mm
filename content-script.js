@@ -2,15 +2,24 @@
 /* global chrome:true*/
 
 var $ = document.querySelector.bind(document);
+var $$ = document.querySelectorAll.bind(document);
+
 var ENTER = 13;
 var LEFT_CLICK = 0;
 var topNav;
 var itemHtml;
 var storage = chrome.storage.local;
+var userID = 0;
 
 function initContentScript() {
   getItem(function(html) {
     itemHtml = html;
+  });
+
+  storage.get('id', function(keys) {
+    if (keys.id) {
+      userID = keys.id;
+    }
   });
 
   var searchButton = $('.lsb');
@@ -28,14 +37,7 @@ function initContentScript() {
 
     if (e.keyCode === ENTER || e.keyCode === LEFT_CLICK) {
       clear();
-      storage.get('id', function(keys) {
-        console.log('items', keys);
-        if (keys.id) {
-          getHttp('https://gamelanguage.com/search?id=' + keys.id + '&q=' + searchBox.value, generateDOM);
-          return;
-        }
-        getHttp('https://gamelanguage.com/search?q=' + searchBox.value, generateDOM);
-      });
+      getHttp('https://gamelanguage.com/search?id=' + userID + '&q=' + searchBox.value, generateDOM);
     }
   }
 }
@@ -74,6 +76,7 @@ function generateDOM(err, data) {
     // tmpItem = tmpItem.replace(new RegExp('{SHORT_TITLE}', 'g'), item.title.substring(0,15) + '...');
     tmpItem = tmpItem.replace('{LINK}', item.link);
     tmpItem = tmpItem.replace('{IMAGE_LINK}', item.imageLink);
+    tmpItem = tmpItem.replace('{ID}', item.id);
     tmpItem = tmpItem.replace('{PRICE}', item.price);
     items += tmpItem;
   });
@@ -84,6 +87,7 @@ function generateDOM(err, data) {
   topNav = $('#top_nav');
   if (topNav) {
     topNav.insertAdjacentHTML('beforebegin', html);
+    addClickHandles();
     return;
   }
 
@@ -97,6 +101,7 @@ function waitForElement(attempt, html) {
     topNav = $('#top_nav');
     if (topNav) {
       topNav.insertAdjacentHTML('beforebegin', html);
+      addClickHandles();
       return;
     }
 
@@ -107,6 +112,28 @@ function waitForElement(attempt, html) {
 
     waitForElement(attempt, html);
   },30);
+}
+
+function addClickHandles() {
+  var products = $$('#products a img');
+  products = Array.prototype.slice.call(products, 0);
+
+  for (var i = 0; i < products.length; i++) {
+    var id = products[i].dataset.id;
+    products[i].addEventListener('click', bindClick(id));
+  }
+
+  function bindClick(productID) {
+    return function() {
+      getHttp('https://gamelanguage.com/click?id=' + userID + '&pid=' + productID, logClickDone);
+    };
+  }
+}
+
+function logClickDone(err) {
+  if (err) {
+    console.log('calling /click returns error:', err);
+  }
 }
 
 function getItem(cb) {
