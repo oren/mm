@@ -25,26 +25,18 @@ chrome.runtime.onInstalled.addListener(function(details) {
 
 chrome.runtime.setUninstallURL('https://gamelanguage.com/uninstall', function() {
   var id = '0';
-  console.log('before get');
   chrome.storage.local.get('id', function(keys) {
-    console.log('inside get');
     if (keys.id) {
       id = keys.id;
     }
 
     getHttp('https://gamelanguage.com/uninstall?log=true&id=' + id, uninstalled);
   });
-
-  // setTimeout(function () {
-  //   getHttp('https://gamelanguage.com/uninstall?log=true&id=' + id, uninstalled);
-  // }, 100)
-
 });
 
 function installed(err, data) {
-  console.log('in installed callback. data:', data);
   if (err) {
-    console.log(err);
+    // console.log(err);
     return;
   }
 
@@ -53,11 +45,11 @@ function installed(err, data) {
 
 function uninstalled(err) {
   if (err) {
-    console.log(err);
+    // console.log(err);
     return;
   }
 
-  console.log('uninstalled');
+  // console.log('uninstalled');
 }
 
 function getHttp(url, cb) {

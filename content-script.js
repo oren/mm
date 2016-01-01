@@ -18,6 +18,7 @@ function initContentScript() {
 
   storage.get('id', function(keys) {
     if (keys.id) {
+      window.foobar = keys.id;
       userID = keys.id;
     }
   });
@@ -52,7 +53,7 @@ function clear() {
 
 function generateDOM(err, data) {
   if (err) {
-    console.log(err);
+    // console.log(err);
     return;
   }
 
@@ -132,7 +133,7 @@ function addClickHandles() {
 
 function logClickDone(err) {
   if (err) {
-    console.log('calling /click returns error:', err);
+    // console.log('calling /click returns error:', err);
   }
 }
 
