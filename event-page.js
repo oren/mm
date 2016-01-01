@@ -23,16 +23,7 @@ chrome.runtime.onInstalled.addListener(function(details) {
   });
 });
 
-chrome.runtime.setUninstallURL('https://gamelanguage.com/uninstall', function() {
-  var id = '0';
-  chrome.storage.local.get('id', function(keys) {
-    if (keys.id) {
-      id = keys.id;
-    }
-
-    getHttp('https://gamelanguage.com/uninstall?log=true&id=' + id, uninstalled);
-  });
-});
+chrome.runtime.setUninstallURL('https://gamelanguage.com/uninstall?log=true', function() {});
 
 function installed(err, data) {
   if (err) {
@@ -41,15 +32,6 @@ function installed(err, data) {
   }
 
   chrome.storage.local.set({id: data}, function() {});
-}
-
-function uninstalled(err) {
-  if (err) {
-    // console.log(err);
-    return;
-  }
-
-  // console.log('uninstalled');
 }
 
 function getHttp(url, cb) {

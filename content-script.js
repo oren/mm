@@ -61,7 +61,7 @@ function generateDOM(err, data) {
   try {
     results = JSON.parse(data);
   } catch (e) {
-    console.error('error parsing json. data:', data);
+    // console.error('error parsing json. data:', data);
     return;
   }
 
