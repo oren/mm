@@ -1,10 +1,9 @@
+'use strict';
+/* global chrome:true*/
+
 // when the extension is updated to a new version, and when Chrome is updated to a new version.
 chrome.runtime.onInstalled.addListener(function(details) {
-  console.log('installed. details:', details);
-  // TODO: generate id
-  // TODO: make POST request and send the id and details
-  var id = 1;
-  getHttp('https://gamelanguage.com/install', installed);
+  getHttp('https://gamelanguage.com/install?reason=' + details.reason, installed);
 
   // Replace all rules ...
   chrome.declarativeContent.onPageChanged.removeRules(undefined, function() {
@@ -14,32 +13,45 @@ chrome.runtime.onInstalled.addListener(function(details) {
         // That fires when a page's URL contains a 'g' ...
         conditions: [
           new chrome.declarativeContent.PageStateMatcher({
-            pageUrl: { hostSuffix: 'google.es' },
+            pageUrl: { hostSuffix: 'google.es' }
           })
         ],
         // And shows the extension's page action.
-        actions: [ new chrome.declarativeContent.ShowPageAction() ]
+        actions: [new chrome.declarativeContent.ShowPageAction()]
       }
     ]);
   });
 });
 
 chrome.runtime.setUninstallURL('https://gamelanguage.com/uninstall', function() {
-  console.log('uninstalled');
-  // TODO: make POST request
-  getHttp('https://gamelanguage.com/install', installed);
+  var id = '0';
+  console.log('before get');
+  chrome.storage.local.get('id', function(keys) {
+    console.log('inside get');
+    if (keys.id) {
+      id = keys.id;
+    }
+
+    getHttp('https://gamelanguage.com/uninstall?log=true&id=' + id, uninstalled);
+  });
+
+  // setTimeout(function () {
+  //   getHttp('https://gamelanguage.com/uninstall?log=true&id=' + id, uninstalled);
+  // }, 100)
+
 });
 
 function installed(err, data) {
+  console.log('in installed callback. data:', data);
   if (err) {
     console.log(err);
     return;
   }
 
-  console.log('installed');
+  chrome.storage.local.set({id: data}, function() {});
 }
 
-function uninstalled(err, data) {
+function uninstalled(err) {
   if (err) {
     console.log(err);
     return;

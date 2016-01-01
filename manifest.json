@@ -13,6 +13,7 @@
   },
   "permissions" : [
     "declarativeContent",
+    "storage",
     "*://*.gamelanguage.com/*"
   ],
   "content_scripts": [

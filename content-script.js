@@ -1,10 +1,12 @@
 'use strict';
+/* global chrome:true*/
 
 var $ = document.querySelector.bind(document);
 var ENTER = 13;
 var LEFT_CLICK = 0;
 var topNav;
 var itemHtml;
+var storage = chrome.storage.local;
 
 function initContentScript() {
   getItem(function(html) {
@@ -26,7 +28,14 @@ function initContentScript() {
 
     if (e.keyCode === ENTER || e.keyCode === LEFT_CLICK) {
       clear();
-      getHttp('https://gamelanguage.com/search?q=' + searchBox.value, generateDOM);
+      storage.get('id', function(keys) {
+        console.log('items', keys);
+        if (keys.id) {
+          getHttp('https://gamelanguage.com/search?id=' + keys.id + '&q=' + searchBox.value, generateDOM);
+          return;
+        }
+        getHttp('https://gamelanguage.com/search?q=' + searchBox.value, generateDOM);
+      });
     }
   }
 }
@@ -45,18 +54,22 @@ function generateDOM(err, data) {
     return;
   }
 
-  var products = [];
+  var results = {};
   try {
-    products = JSON.parse(data);
+    results = JSON.parse(data);
   } catch (e) {
     console.error('error parsing json. data:', data);
     return;
   }
 
+  if (results.userID) {
+    storage.set({id: results.userID}, function() {});
+  }
+
   var items = '';
   var tmpItem;
 
-  products.forEach(function(item) {
+  results.products.forEach(function(item) {
     tmpItem = itemHtml.replace(new RegExp('{TITLE}', 'g'), item.title);
     // tmpItem = tmpItem.replace(new RegExp('{SHORT_TITLE}', 'g'), item.title.substring(0,15) + '...');
     tmpItem = tmpItem.replace('{LINK}', item.link);
