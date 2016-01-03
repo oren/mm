@@ -83,7 +83,7 @@ function generateDOM(err, data) {
     items += tmpItem;
   });
 
-  var style = 'margin-left: 126px; margin-top: 10px; color: #1a0dab; font-size: 18px;';
+  var style = 'margin-left: 134px; color: #1a0dab; font-size: 18px;';
   var html = '<div id="products" style="' + style + '"><p>Resultados de MediaMarkt</p>' + items + '</div>';
 
   appBar = $('.appbar');
