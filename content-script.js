@@ -82,7 +82,7 @@ function generateDOM(err, data) {
     tmpItem = tmpItem.replace('{PRICE}', item.price);
     if (index > 4) {
       // hide product
-      tmpItem = tmpItem.replace('inline-block', '');
+      tmpItem = tmpItem.replace('inline-block', 'none');
     }
     items += tmpItem;
   });
