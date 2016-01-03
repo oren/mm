@@ -19,7 +19,7 @@
   "content_scripts": [
     {
       "matches": ["https://www.google.es/*"],
-      "js": ["content-script.js"]
+      "js": ["content-script.js", "carousel.js"]
     }
   ],
   "icons" : {

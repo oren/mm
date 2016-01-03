@@ -72,7 +72,7 @@ function generateDOM(err, data) {
   var items = '';
   var tmpItem;
 
-  results.products.forEach(function(item) {
+  results.products.forEach(function(item, index) {
     var shortTitle = item.title.length > 19 ? item.title.substring(0,19) + '...' : item.title;
     tmpItem = itemHtml.replace(new RegExp('{TITLE}', 'g'), item.title);
     tmpItem = tmpItem.replace(new RegExp('{SHORT_TITLE}', 'g'), shortTitle);
@@ -80,11 +80,22 @@ function generateDOM(err, data) {
     tmpItem = tmpItem.replace('{IMAGE_LINK}', item.imageLink);
     tmpItem = tmpItem.replace('{ID}', item.id);
     tmpItem = tmpItem.replace('{PRICE}', item.price);
+    if (index > 4) {
+      // hide product
+      tmpItem = tmpItem.replace('inline-block', '');
+    }
     items += tmpItem;
   });
 
-  var style = 'margin-left: 134px; color: #1a0dab; font-size: 18px;';
-  var html = '<div id="products" style="' + style + '"><p>Resultados de MediaMarkt</p>' + items + '</div>';
+  var showNext = 'none';
+  if (results.products.length > 5) {
+    showNext = '';
+  }
+
+  var style = 'margin-left: 134px; color: #1a0dab; font-size: 18px; position: relative;';
+  var prev='<a class="prev" href="#" style="display: none; position: absolute; top:83px; left: -23px; text-decoration: none;">&lt;</a>';
+  var next='<a class="next" href="#" style="display: ' + showNext + '; position: absolute; top:83px; left: 620px; text-decoration: none;">&gt;</a>';
+  var html = '<div id="products" style="' + style + '"><p>Resultados de MediaMarkt</p>' + prev + items + next + '</div>';
 
   appBar = $('.appbar');
   if (appBar) {
@@ -129,6 +140,11 @@ function addClickHandles() {
     return function() {
       getHttp('https://gamelanguage.com/click?id=' + userID + '&pid=' + productID, logClickDone);
     };
+  }
+
+  if (products.length > 5) {
+    // carousel code
+    attachNext();
   }
 }
 
