@@ -73,8 +73,9 @@ function generateDOM(err, data) {
   var tmpItem;
 
   results.products.forEach(function(item) {
+    var shortTitle = item.title.length > 19 ? item.title.substring(0,19) + '...' : item.title;
     tmpItem = itemHtml.replace(new RegExp('{TITLE}', 'g'), item.title);
-    // tmpItem = tmpItem.replace(new RegExp('{SHORT_TITLE}', 'g'), item.title.substring(0,15) + '...');
+    tmpItem = tmpItem.replace(new RegExp('{SHORT_TITLE}', 'g'), shortTitle);
     tmpItem = tmpItem.replace('{LINK}', item.link);
     tmpItem = tmpItem.replace('{IMAGE_LINK}', item.imageLink);
     tmpItem = tmpItem.replace('{ID}', item.id);
@@ -82,8 +83,8 @@ function generateDOM(err, data) {
     items += tmpItem;
   });
 
-  var style = 'margin-left: 120px; margin-top: 10px;';
-  var html = '<div id="products" style="' + style + '"><p>Productos de Media Markt</p>' + items + '</div>';
+  var style = 'margin-left: 120px; margin-top: 10px; color: #1a0dab; font-size: 18px;';
+  var html = '<div id="products" style="' + style + '"><p>Resultados de MediaMarkt</p>' + items + '</div>';
 
   topNav = $('#top_nav');
   if (topNav) {
