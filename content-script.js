@@ -69,6 +69,10 @@ function generateDOM(err, data) {
     storage.set({id: results.userID}, function() {});
   }
 
+  if (!results.products.length) {
+    return;
+  }
+
   var items = '';
   var tmpItem;
 
