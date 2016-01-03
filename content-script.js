@@ -6,7 +6,7 @@ var $$ = document.querySelectorAll.bind(document);
 
 var ENTER = 13;
 var LEFT_CLICK = 0;
-var topNav;
+var appBar;
 var itemHtml;
 var storage = chrome.storage.local;
 var userID = 0;
@@ -83,12 +83,12 @@ function generateDOM(err, data) {
     items += tmpItem;
   });
 
-  var style = 'margin-left: 120px; margin-top: 10px; color: #1a0dab; font-size: 18px;';
+  var style = 'margin-left: 126px; margin-top: 10px; color: #1a0dab; font-size: 18px;';
   var html = '<div id="products" style="' + style + '"><p>Resultados de MediaMarkt</p>' + items + '</div>';
 
-  topNav = $('#top_nav');
-  if (topNav) {
-    topNav.insertAdjacentHTML('beforebegin', html);
+  appBar = $('.appbar');
+  if (appBar) {
+    appBar.insertAdjacentHTML('afterEnd', html);
     addClickHandles();
     return;
   }
@@ -100,9 +100,9 @@ function generateDOM(err, data) {
 // try 100 times
 function waitForElement(attempt, html) {
   setTimeout(function() {
-    topNav = $('#top_nav');
-    if (topNav) {
-      topNav.insertAdjacentHTML('beforebegin', html);
+    appBar = $('.appbar');
+    if (appBar) {
+      appBar.insertAdjacentHTML('afterEnd', html);
       addClickHandles();
       return;
     }
