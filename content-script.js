@@ -98,7 +98,7 @@ function generateDOM(err, data) {
 
   var style = 'margin-left: 134px; color: #1a0dab; font-size: 18px; position: relative;';
   var prev='<button class="prev" type="submit" style="display: none; position: absolute; top:102px; left: -45px; font-size: 20px; height: 43px;";>&lt;</button>'
-  var next='<button class="next" type="submit" style="position: absolute; top:102px; left: 620px; font-size: 20px; height: 43px;";>&gt;</button>';
+  var next='<button class="next" type="submit" style="display: ' + showNext + '; position: absolute; top:102px; left: 620px; font-size: 20px; height: 43px;";>&gt;</button>';
   var html = '<div id="products" style="' + style + '"><p>Resultados de MediaMarkt</p>' + prev + items + next + '</div>';
 
   appBar = $('.appbar');
