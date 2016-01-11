@@ -9,6 +9,7 @@ var prev;
 var total;
 
 function attachNext() {
+  offset = 0;
   next = $("#products .next")
   next.addEventListener('click', nextProduct);
   prev = $("#products .prev")
