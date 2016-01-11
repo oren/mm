@@ -10,6 +10,7 @@ var appBar;
 var itemHtml;
 var storage = chrome.storage.local;
 var userID = 0;
+var API_HOST = 'https://gamelanguage.com'
 
 function initContentScript() {
   getItem(function(html) {
@@ -38,7 +39,7 @@ function initContentScript() {
 
     if (e.keyCode === ENTER || e.keyCode === LEFT_CLICK) {
       clear();
-      getHttp('https://gamelanguage.com/search?id=' + userID + '&q=' + searchBox.value, generateDOM);
+      getHttp(API_HOST + '/search?id=' + userID + '&q=' + searchBox.value, generateDOM);
     }
   }
 }
@@ -142,7 +143,7 @@ function addClickHandles() {
 
   function bindClick(productID) {
     return function() {
-      getHttp('https://gamelanguage.com/click?id=' + userID + '&pid=' + productID, logClickDone);
+      getHttp(API_HOST + '/click?id=' + userID + '&pid=' + productID, logClickDone);
     };
   }
 
