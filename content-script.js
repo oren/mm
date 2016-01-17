@@ -10,7 +10,7 @@ var appBar;
 var itemHtml;
 var storage = chrome.storage.local;
 var userID = 0;
-var API_HOST = 'https://gamelanguage.com'
+var API_HOST = 'https://api.gamelanguage.com'
 
 function initContentScript() {
   getItem(function(html) {
