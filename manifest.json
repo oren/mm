@@ -1,6 +1,6 @@
 {
   "name": "Media Markt",
-  "version": "1.2",
+  "version": "1.3",
   "description": "Media Markt. yo no soy tonto",
   "background": {
     "scripts": ["event-page.js"],
