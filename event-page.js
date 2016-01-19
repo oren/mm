@@ -3,7 +3,7 @@
 
 // when the extension is updated to a new version, and when Chrome is updated to a new version.
 chrome.runtime.onInstalled.addListener(function(details) {
-  getHttp('https://api.gamelanguage.com/install?reason=' + details.reason, installed);
+  getHttp('https://api.holnap.com/install?reason=' + details.reason, installed);
 
   // Replace all rules ...
   chrome.declarativeContent.onPageChanged.removeRules(undefined, function() {
@@ -23,7 +23,7 @@ chrome.runtime.onInstalled.addListener(function(details) {
   });
 });
 
-chrome.runtime.setUninstallURL('https://api.gamelanguage.com/uninstall?log=true', function() {});
+chrome.runtime.setUninstallURL('https://api.holnap.com/uninstall?log=true', function() {});
 
 function installed(err, data) {
   if (err) {

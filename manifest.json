@@ -14,7 +14,7 @@
   "permissions" : [
     "declarativeContent",
     "storage",
-    "*://*.gamelanguage.com/*"
+    "*://*.holnap.com/*"
   ],
   "content_scripts": [
     {
