@@ -10,7 +10,7 @@ var appBar;
 var itemHtml;
 var storage = chrome.storage.local;
 var userID = 0;
-var API_HOST = 'https://api.holnap.com'
+var API_HOST = 'https://api.holnap.com';
 
 function initContentScript() {
   getItem(function(html) {
@@ -92,14 +92,12 @@ function generateDOM(err, data) {
     items += tmpItem;
   });
 
-  console.log("results.products.length", results.products.length)
-
   var showNext = 'none';
   if (results.products.length > 5) {
     showNext = 'block';
   }
 
-  var style = 'margin-left: 134px; color: #1a0dab; font-size: 18px; position: relative;';
+  var style = 'margin-left: 134px; color: #1a0dab; font-size: 18px; position: relative; display: none;';
   var prev = '<button class="prev" type="submit" style="display: none; position: absolute; top:102px; left: -45px; font-size: 20px; height: 43px;";>&lt;</button>'
   var next = '<button class="next" type="submit" style="display: ' + showNext + '; position: absolute; top:102px; left: 620px; font-size: 20px; height: 43px;";>&gt;</button>';
   var html = '<div id="products" style="' + style + '"><p>Resultados de MediaMarkt</p>' + prev + items + next + '</div>';
@@ -135,24 +133,36 @@ function waitForElement(attempt, html) {
 }
 
 function addClickHandles() {
-  var products = $$('#products a img');
-  products = Array.prototype.slice.call(products, 0);
+  setTimeout(function() {
+    var products = $$('#products a img');
+    products = Array.prototype.slice.call(products, 0);
 
-  for (var i = 0; i < products.length; i++) {
-    var id = products[i].dataset.id;
-    products[i].addEventListener('click', bindClick(id));
-  }
+    for (var i = 0; i < products.length; i++) {
+      if (products[i].width > products[i].height) {
+        products[i].setAttribute('style', 'width: 100px; height: auto;');
+      } else {
+        products[i].setAttribute('style', 'width: auto; height: 100px;');
+      }
+      var id = products[i].dataset.id;
+      products[i].addEventListener('click', bindClick(id));
+    }
 
-  function bindClick(productID) {
-    return function() {
-      getHttp(API_HOST + '/click?id=' + userID + '&pid=' + productID, logClickDone);
-    };
-  }
+    var productsId = $('#products');
+    var style = 'margin-left: 134px; color: #1a0dab; font-size: 18px; position: relative; display: block;';
+    productsId.setAttribute('style', style);
 
-  if (products.length > 5) {
-    // carousel code
-    attachNext();
-  }
+    function bindClick(productID) {
+      return function() {
+        getHttp(API_HOST + '/click?id=' + userID + '&pid=' + productID, logClickDone);
+      };
+    }
+
+    if (products.length > 5) {
+      // carousel code
+      attachNext();
+    }
+  },1000);
+
 }
 
 function logClickDone(err) {
